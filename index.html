@@ -1,0 +1,698 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>Peças do Lançamento · Toh</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"><style>
+/* Layout: one day per page, like slides; a sticky bar with the day strip; pieces as cards in a wrapping grid, each shown in its final format. */
+:root{
+  --bg:#FAF6E4; --surface:#FFFFFF; --sunk:#F1EBD6; --ink:#191718; --ink-soft:#5E5953; --line:rgba(25,23,24,.14);
+  --orange:#E85C1E; --orange-ink:#FFFFFF; --nu-fill:#191718; --nu-ink:#FAF6E4; --both:#6F6B64; --both-ink:#FFFFFF;
+  --ok:#2F7A4C; --ok-soft:#E1F0E5; --fix:#9A5B00; --fix-soft:#F8EBD3; --chat:#EFE6CF; --bubble:#FFFFFF;
+  --display:'Nunito','Poppins',Arial,Helvetica,sans-serif; --body:'Plus Jakarta Sans','Inter',Arial,Helvetica,sans-serif;
+  --r-lg:28px; --r-md:18px; --r-sm:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#191718; --surface:#242120; --sunk:#2E2A28; --ink:#FAF6E4; --ink-soft:#B9B1A4; --line:rgba(250,246,228,.16);
+  --nu-fill:#FAF6E4; --nu-ink:#191718; --both:#8C867D; --ok:#7BC796; --ok-soft:#1F3428; --fix:#E9B66A; --fix-soft:#3A2E1C; --chat:#2B2723; --bubble:#3A3531; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#191718; --surface:#242120; --sunk:#2E2A28; --ink:#FAF6E4; --ink-soft:#B9B1A4; --line:rgba(250,246,228,.16);
+  --nu-fill:#FAF6E4; --nu-ink:#191718; --both:#8C867D; --ok:#7BC796; --ok-soft:#1F3428; --fix:#E9B66A; --fix-soft:#3A2E1C; --chat:#2B2723; --bubble:#3A3531; color-scheme:dark}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.08;text-wrap:balance}
+img,video{max-width:100%;display:block}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{height:22px;width:auto;fill:var(--orange);flex:none}
+.brand b{font:800 15px/1 var(--display);white-space:nowrap}
+.strip{flex:1 1 360px;min-width:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding:4px 2px}
+.chip{flex:none;border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:6px 12px;font:700 13px/1 var(--display);white-space:nowrap;font-variant-numeric:tabular-nums}
+.chip[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:6px;vertical-align:1px;background:var(--ok)}
+.chip .dot.fix{background:var(--fix)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1.5px solid var(--ink);background:transparent;border-radius:999px;padding:8px 14px;font:700 13px/1 var(--display);white-space:nowrap}
+.btn.solid{background:var(--ink);color:var(--bg)}
+.btn.brand{background:var(--orange);border-color:var(--orange);color:var(--orange-ink)}
+.btn.small{padding:6px 10px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.navbtn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;font:800 16px/1 var(--display);display:grid;place-items:center;flex:none}
+.navbtn:disabled{opacity:.3}
+.switch{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 var(--display)}
+.switch input{width:36px;height:20px;accent-color:var(--orange)}
+
+.page{max-width:1280px;margin:0 auto;padding-block:32px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+.pill{display:inline-flex;align-self:flex-start;border:2px solid var(--ink);border-radius:999px;padding:7px 16px;font:700 13px/1 var(--display);letter-spacing:.09em;text-transform:uppercase}
+.hero{display:flex;flex-direction:column;gap:14px}
+.hero h1{font-weight:800;font-size:clamp(32px,5.2vw,58px)}
+.lead{max-width:66ch;color:var(--ink-soft);font-size:16px;margin:0}
+.legend{display:flex;gap:22px;flex-wrap:wrap;color:var(--ink-soft);font-weight:500}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:13px;height:13px;border-radius:50%;display:inline-block}
+.c-colors{background:var(--orange)} .c-nu{background:var(--nu-fill)} .c-ambas{background:var(--both)}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:70ch}
+
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.dcard{background:var(--surface);border:0;border-radius:var(--r-md);padding:18px;text-align:left;display:flex;flex-direction:column;gap:8px;min-width:0}
+.dcard:hover{outline:2px solid var(--ink)}
+.dcard .d{font:800 26px/1 var(--display);font-variant-numeric:tabular-nums}
+.dcard .w{font:700 12px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.dcard .t{font-weight:600}
+.dcard .m{font-size:13px;color:var(--ink-soft)}
+.colls{display:flex;gap:5px}
+.colls i{width:10px;height:10px;border-radius:50%}
+.meter{height:6px;border-radius:6px;background:var(--sunk);overflow:hidden}
+.meter b{display:block;height:100%;background:var(--ok)}
+
+.panel{background:var(--surface);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:14px}
+.panel h2{font-size:22px}
+.who{display:flex;flex-wrap:wrap;gap:10px}
+.person{display:flex;align-items:center;gap:8px;background:var(--sunk);border-radius:999px;padding:5px 12px 5px 5px;font-size:13px}
+.person img{width:26px;height:26px;border-radius:50%}
+.fixlist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.fixlist li{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding:10px 12px;border-radius:var(--r-sm);background:var(--fix-soft)}
+.fixlist a{color:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+
+.dayhead{display:flex;flex-direction:column;gap:12px}
+.dayhead h1{font-weight:800;font-size:clamp(30px,4.6vw,52px)}
+.daymeta{display:flex;gap:10px 18px;flex-wrap:wrap;color:var(--ink-soft);font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;align-items:start}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.piece{background:var(--surface);border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.piece.wide{grid-column:span 2}
+@media (max-width:760px){.piece.wide{grid-column:auto}}
+.ph{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.time{font:800 18px/1 var(--display);font-variant-numeric:tabular-nums;margin-right:4px}
+.tag{font:700 11px/1 var(--display);letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:5px 9px}
+.tag.colors{background:var(--orange);color:var(--orange-ink)} .tag.nu{background:var(--nu-fill);color:var(--nu-ink)} .tag.ambas{background:var(--both);color:var(--both-ink)}
+.tag.mode{border:1.5px solid var(--line);color:var(--ink-soft)}
+.chan{font-weight:600;color:var(--ink-soft);font-size:13px}
+.piece h3{font-size:21px;font-weight:800}
+
+.empty{border:2px dashed var(--line);border-radius:var(--r-md);display:grid;place-items:center;text-align:center;color:var(--ink-soft);padding:16px;font-size:13px;font-weight:600;background:var(--sunk)}
+.frame{border-radius:var(--r-md);overflow:hidden;background:#000;width:100%}
+.v916{aspect-ratio:9/16;max-width:290px;margin:0 auto;width:100%}
+.v45{aspect-ratio:4/5}
+.v169{aspect-ratio:16/9}
+.frame video,.frame img{width:100%;height:100%;object-fit:contain}
+.frame.cover img{object-fit:cover}
+.subcap{font:700 11px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.covers{display:flex;gap:12px;align-items:flex-end;justify-content:center}
+.covers .mini{width:84px;flex:none;display:flex;flex-direction:column;gap:6px}
+.covers .mini .frame{aspect-ratio:4/5}
+
+.car{position:relative}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:var(--r-md);background:#000;aspect-ratio:4/5}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:start;height:100%}
+.slide img,.slide video{width:100%;height:100%;object-fit:cover}
+.carnav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#191718;font:800 18px/1 var(--display);display:grid;place-items:center}
+.carnav.prev{left:10px} .carnav.next{right:10px}
+.count{position:absolute;top:10px;right:10px;background:rgba(25,23,24,.78);color:#FAF6E4;border-radius:999px;padding:4px 10px;font:700 12px/1 var(--display);font-variant-numeric:tabular-nums}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
+.thumb{border:2px solid transparent;border-radius:8px;padding:0;overflow:hidden;background:#000;aspect-ratio:4/5;position:relative}
+.thumb[aria-current="true"]{border-color:var(--orange)}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover}
+.thumb span{position:absolute;left:3px;bottom:3px;background:rgba(25,23,24,.75);color:#FAF6E4;font:700 10px/1 var(--display);padding:2px 5px;border-radius:5px}
+
+.stories{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.stories .frame{flex:0 0 150px;aspect-ratio:9/16}
+.stories .empty{flex:0 0 150px;aspect-ratio:9/16}
+
+.chat{background:var(--chat);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;gap:10px}
+.chathead{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.chathead .av{width:32px;height:32px;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.chathead .av svg{height:12px;fill:#fff}
+.bubble{background:var(--bubble);border-radius:4px 16px 16px 16px;padding:8px;max-width:92%;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 1px rgba(0,0,0,.06)}
+.bubble .att{border-radius:10px;overflow:hidden;background:#000}
+.bubble .att img,.bubble .att video{width:100%;max-height:420px;object-fit:contain}
+.bubble p{margin:0 4px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+.bubble small{align-self:flex-end;color:var(--ink-soft);font-size:11px;margin:0 4px}
+
+.mail{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.inbox{display:flex;gap:12px;padding:14px;background:var(--sunk);align-items:flex-start}
+.inbox .av{width:38px;height:38px;border-radius:50%;background:var(--orange);display:grid;place-items:center;flex:none}
+.inbox .av svg{height:13px;fill:#fff}
+.inbox .l{min-width:0;display:flex;flex-direction:column;gap:2px}
+.inbox .s{font-weight:700}
+.inbox .p{color:var(--ink-soft);font-size:13px}
+.mailbody{padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
+.mailbody .art{border-radius:var(--r-sm);overflow:hidden;background:var(--sunk)}
+.mailbody .art img{width:100%}
+.mailbody p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.cta{align-self:center;background:var(--orange);color:var(--orange-ink);border-radius:999px;padding:12px 22px;font:700 14px/1 var(--display)}
+
+.yt{display:flex;flex-direction:column;gap:12px}
+.ytres{display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:start}
+@media (max-width:480px){.ytres{grid-template-columns:1fr}}
+.ytres .frame{aspect-ratio:16/9}
+.ytres b{display:block;font-weight:700;line-height:1.3}
+.ytres small{color:var(--ink-soft)}
+
+.texts{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.field .lab{font:700 11px/1 var(--display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+.field .val{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--sunk);border-radius:var(--r-sm);padding:12px 14px;font-size:14px;margin:0}
+.field .val.muted{color:var(--ink-soft);font-style:italic}
+textarea,input[type=text],select{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:10px 12px;font-size:14px}
+textarea{min-height:90px;resize:vertical}
+.metaedit{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mediaedit{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.mlist{display:flex;flex-wrap:wrap;gap:8px}
+.mitem{width:74px;display:flex;flex-direction:column;gap:4px}
+.mitem .frame{aspect-ratio:4/5}
+.mitem .row{display:flex;gap:2px;justify-content:space-between}
+.mitem .row button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:2px 0;font-size:12px}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.hint{font-size:12px;color:var(--ink-soft);margin:0}
+
+.review{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.rbtns{display:flex;gap:8px;flex-wrap:wrap}
+.rb{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:9px 16px;font:700 13px/1 var(--display)}
+.rb.ok[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.rb.fix[aria-pressed="true"]{background:var(--fix);border-color:var(--fix);color:var(--surface)}
+.verdicts{display:flex;flex-direction:column;gap:6px}
+.verdict{display:flex;gap:8px;align-items:flex-start;font-size:13px;border-radius:var(--r-sm);padding:8px 10px}
+.verdict.ok{background:var(--ok-soft)} .verdict.fix{background:var(--fix-soft)}
+.verdict img{width:22px;height:22px;border-radius:50%;flex:none}
+.verdict p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.edittools{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px}
+.addpiece{background:transparent;border:2px dashed var(--line);border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.daynote{background:var(--surface);border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;gap:10px;max-width:760px}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:13px;z-index:20;max-width:calc(100% - 32px);text-align:center}
+.notice{background:var(--surface);border-radius:var(--r-lg);padding:28px;max-width:640px}
+.offname{display:flex;gap:8px;align-items:center}
+.offname input{width:180px}
+@media (max-width:600px){.brand b{display:none}.strip{order:3;flex-basis:100%}.tools{margin-left:auto}}
+@media (prefers-reduced-motion:reduce){.track{scroll-behavior:auto}}
+</style></head><body><div id="app"></div><script>window.__STATIC__={"days": [{"date": "21/10", "note": "Publicado em 21/10.", "order": 1, "phase": "Pré-lançamento", "pieces": [{"channel": "Instagram", "coll": "ambas", "cover": null, "id": "p2110a", "kind": "reel", "media": [], "mode": "agendado", "name": "Reel teaser 1", "t": {"caption": "Tem coisa nova chegando. E não é uma só.\n\nDuas coleções novas. Dois jeitos de escolher.\n\n28/10. Ativa o lembrete e fica de olho.\n\nQuer ver antes de todo mundo? Entra no Grupo VIP pelo link da bio.\n\n#toh #lancamento #petlovers #cachorro #gato"}, "time": "20h"}, {"channel": "YouTube", "coll": "ambas", "cover": null, "id": "p2110b", "kind": "short", "media": [], "mode": "agendado", "name": "Short teaser 1", "t": {"description": "Duas coleções novas. Dois jeitos de escolher. Lançamento em 28/10 no site da Toh.\n\nQuer acesso antes de todo mundo? Entre no Grupo VIP: [LINK VIP]\n\nInscreva-se no canal e ative o sininho para ver o vídeo completo.\n\n#shorts #toh #pets #cachorro #gato", "title": "Duas coleções novas da Toh chegam em 28/10 #shorts"}, "time": "20h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2110c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost do teaser e contagem regressiva para 28/10", "t": {}, "time": "20h15"}, {"channel": "Grupo VIP", "coll": "ambas", "cover": null, "id": "p2110d", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Mensagem 1 · aviso em primeira mão", "note": "Anexo: o vídeo do teaser 1.", "t": {"text": "Oi, VIPs! 🐾 Vocês são os primeiros a saber:\n\nem 28/10 a Toh lança DUAS coleções novas. Dois jeitos de escolher — um para quem escolhe pela história e estampa, outro para quem escolhe pela cor e combinação.\n\nE quem está aqui no grupo compra antes: o acesso antecipado abre na terça, 27/10, às 19h, só para vocês.\n\nAté lá vamos soltar spoilers por aqui que não aparecem no Instagram. Fiquem por perto! 👀"}, "time": "20h"}], "title": "Teaser 1", "weekday": "Qua", "id": "d2110"}, {"date": "22/10", "order": 2, "phase": "Pré-lançamento", "pieces": [{"channel": "E-mail", "coll": "ambas", "cover": null, "id": "p2210a", "kind": "email", "media": [], "mode": "agendado", "name": "E-mail teaser com convite para o Grupo VIP", "note": "Assunto alternativo para teste A/B: Quer ver antes de todo mundo?", "t": {"body": "Duas coleções novas. Dois jeitos de escolher.\n\nEm 28/10 a Toh lança duas coleções de uma vez — e cada uma tem o seu jeito.\n\nUma é para quem escolhe pela história e estampa.\nA outra, para quem escolhe pela cor e combinação.\n\nAinda não dá para contar mais. Mas dá para ver antes:\n\nNo Grupo VIP da Toh no WhatsApp você\n• compra antes de todo mundo, a partir de 27/10 às 19h;\n• recebe spoilers que não saem no Instagram;\n• assiste ao vídeo completo um dia antes.\n\nAté 28/10!\nEquipe Toh", "button": "Quero entrar no Grupo VIP", "preheader": "No Grupo VIP você compra antes, em 27/10, e recebe spoilers exclusivos.", "subject": "Duas coleções novas chegam em 28/10"}, "time": "10h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2210b", "kind": "stories", "media": [], "mode": "manual", "name": "Enquete: história e estampa ou cor e combinação", "t": {}, "time": "12h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2210c", "kind": "stories", "media": [], "mode": "agendado", "name": "Convite para o Grupo VIP", "t": {}, "time": "12h"}], "title": "E-mail teaser", "weekday": "Qui", "id": "d2210"}, {"date": "23/10", "order": 3, "phase": "Pré-lançamento", "pieces": [{"channel": "Instagram", "coll": "ambas", "cover": null, "id": "p2310a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel suspense", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2310b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost do carrossel e convite para o Grupo VIP", "t": {}, "time": "18h15"}, {"channel": "Grupo VIP", "coll": "ambas", "cover": null, "id": "p2310c", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Mensagem 2 · spoiler exclusivo", "note": "A imagem de spoiler não sai no Instagram.", "t": {"text": "Spoiler só para quem está aqui 🤫\n\nEssa imagem não vai para o Instagram. Conseguem adivinhar o que vem por aí?\n\nUma dica: uma das coleções conta histórias de lugares que a gente ama. A outra brinca com cor.\n\nReajam com ❤️ se já estão curiosos. E lembrem: terça, 27/10, às 19h, o acesso antecipado abre só para o grupo."}, "time": "19h"}], "title": "Carrossel suspense", "weekday": "Sex", "id": "d2310"}, {"date": "24/10", "note": "Domingo, 25/10, não tem postagem.", "order": 4, "phase": "Pré-lançamento", "pieces": [{"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2410a", "kind": "stories", "media": [], "mode": "manual", "name": "Bastidores com os pets, sem mostrar produto", "t": {}, "time": "12h"}], "title": "Bastidores", "weekday": "Sáb", "id": "d2410"}, {"date": "26/10", "order": 5, "phase": "Pré-lançamento", "pieces": [{"channel": "Instagram", "coll": "ambas", "cover": null, "id": "p2610a", "kind": "reel", "media": [], "mode": "agendado", "name": "Reel teaser 2 · making of", "t": {"caption": "Bastidores de duas coleções que chegam juntas — mas cada uma do seu jeito. 🎬🐾\n\nDuas coleções novas. Dois jeitos de escolher.\n→ Para quem escolhe pela história e estampa.\n→ Para quem escolhe pela cor e combinação.\n\nQuarta, 28/10, às 10h, no site.\n\nÚltima chamada: quem está no Grupo VIP compra antes, amanhã às 19h. Link na bio.\n\n#toh #bastidores #makingof #lancamento #petlovers"}, "time": "18h"}, {"channel": "YouTube", "coll": "ambas", "cover": null, "id": "p2610b", "kind": "short", "media": [], "mode": "agendado", "name": "Short teaser 2", "t": {"description": "Um pouco do making of das duas coleções que chegam na quarta, 28/10, às 10h. Dois jeitos de escolher: pela história e estampa, ou pela cor e combinação.\n\nCompre antes no Grupo VIP: [LINK VIP]\n\nInscreva-se e ative o sininho: o vídeo completo sai aqui no lançamento.\n\n#shorts #toh #bastidores #pets", "title": "Bastidores: duas coleções novas da Toh #shorts"}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2610c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost do teaser, contagem regressiva e última chamada do Grupo VIP", "t": {}, "time": "18h15"}, {"channel": "Grupo VIP", "coll": "ambas", "cover": null, "id": "p2610d", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Mensagem 3 · teaser 2", "note": "Anexo: o vídeo do teaser 2.", "t": {"text": "Falta pouco! ⏳\n\nAqui vai mais um pedacinho dos bastidores 🎬\n\nAnotem: amanhã, terça 27/10, às 19h, a gente manda aqui os links das duas coleções. Vocês compram 15 horas antes de todo mundo — o site abre para o público só na quarta, às 10h.\n\nAtivem as notificações do grupo para não perder."}, "time": "19h"}], "title": "Teaser 2", "weekday": "Seg", "id": "d2610"}, {"date": "27/10", "order": 6, "phase": "Pré-lançamento", "pieces": [{"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2710a", "kind": "stories", "media": [], "mode": "manual", "name": "É amanhã, com o horário do lançamento (10h)", "t": {}, "time": "12h"}, {"channel": "Grupo VIP", "coll": "ambas", "cover": null, "id": "p2710b", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Mensagem 4 · acesso antecipado", "note": "Anexo: o vídeo completo. Só sai depois de conferir os dois links.", "t": {"text": "Abriu! 🎉 O acesso antecipado é só de vocês.\n\nDuas coleções novas. Dois jeitos de escolher:\n\n🎨 COLORS — para quem escolhe pela cor e combinação\nhttps://toh.com.br/collections/colecao-colors\n\n🌿 NATUREZA URBANA — para quem escolhe pela história e estampa\nhttps://toh.com.br/collections/colecao-natureza-urbana\n\nE o vídeo completo, que o público só vê amanhã, está aí em cima 👆\n\nVocês têm até amanhã, quarta, às 10h, antes de abrir para todo mundo. Boas escolhas! 🐾"}, "time": "19h"}], "title": "Acesso antecipado", "weekday": "Ter", "id": "d2710"}, {"date": "28/10", "order": 7, "phase": "Lançamento", "pieces": [{"channel": "Instagram", "coll": "ambas", "cover": null, "id": "p2810a", "kind": "reel", "media": [], "mode": "agendado", "name": "Reel do vídeo completo", "note": "Primeiro post do dia, com os produtos das duas coleções marcados.", "t": {"caption": "Chegaram. Duas coleções novas, dois jeitos de escolher. 🐾\n\n🌿 NATUREZA URBANA é para quem escolhe pela história e estampa. Quatro estampas inspiradas em lugares do Brasil: Floripa, Paraty, Trancoso e Sampa.\n\n🎨 COLORS é para quem escolhe pela cor e combinação. Breeze, Blossom e Lime em cores sólidas, para montar o conjunto do seu jeito, e o Mesh H Candy.\n\nNo vídeo, os bastidores e os detalhes de cada peça. Qual é o seu jeito de escolher? Conta aqui nos comentários.\n\nJá no site: link na bio.\n\n#toh #lancamento #naturezaurbana #colors #petlovers #cachorro #gato"}, "time": "10h"}, {"channel": "YouTube", "coll": "ambas", "cover": null, "id": "p2810b", "kind": "youtube", "media": [], "mode": "agendado", "name": "Vídeo completo no YouTube", "t": {"description": "Duas coleções novas. Dois jeitos de escolher.\n\nNeste vídeo você acompanha o making of das duas coleções da Toh e vê de perto os detalhes de cada peça.\n\n🌿 Natureza Urbana — para quem escolhe pela história e estampa. Floripa, Paraty, Trancoso e Sampa em peitorais, coleiras e guias.\n→ https://toh.com.br/collections/colecao-natureza-urbana\n\n🎨 Colors — para quem escolhe pela cor e combinação. Breeze, Blossom e Lime em cores sólidas, e o Mesh H Candy.\n→ https://toh.com.br/collections/colecao-colors\n\nTodos os produtos: https://toh.com.br\nInstagram: @toh\n\nInscreva-se no canal para ver os próximos vídeos.\n\n#toh #petlovers #cachorro #gato #lancamento", "title": "Natureza Urbana e Colors: os bastidores das novas coleções da Toh"}, "time": "10h"}, {"channel": "Grupo VIP", "coll": "ambas", "cover": null, "id": "p2810c", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Mensagem 5 · abriu para todos", "t": {"text": "Bom dia, VIPs! ☀️\n\nAgora o lançamento abriu para todo mundo — mas vocês viram primeiro 😉\n\nSe ainda não escolheram, os links continuam aqui:\n🎨 Colors: https://toh.com.br/collections/colecao-colors\n🌿 Natureza Urbana: https://toh.com.br/collections/colecao-natureza-urbana\n\nObrigado por fazerem parte do grupo. Os próximos spoilers também saem primeiro por aqui. 🐾"}, "time": "10h"}, {"channel": "Instagram Stories", "coll": "ambas", "cover": null, "id": "p2810d", "kind": "stories", "media": [], "mode": "manual", "name": "Chegou", "t": {}, "time": "10h15"}, {"channel": "E-mail", "coll": "ambas", "cover": null, "id": "p2810e", "kind": "email", "media": [], "mode": "agendado", "name": "E-mail de lançamento", "note": "As duas coleções em blocos iguais, com chamada para o vídeo.", "t": {}, "time": "10h30"}, {"channel": "Influencers", "coll": "ambas", "cover": null, "id": "p2810f", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Aviso aos influencers: postagens liberadas", "note": "Enviado a cada influencer.", "t": {"text": "Oi, [NOME]! Está liberado 🎉 As duas coleções já estão no site e você pode postar a partir de agora.\n\nLembrete rápido: um post por coleção, marcando @toh, com #tohnaturezaurbana ou #tohcolors e o link nos stories:\n• Natureza Urbana: https://toh.com.br/collections/colecao-natureza-urbana\n• Colors: https://toh.com.br/collections/colecao-colors\n\nMal podemos esperar para ver! 🐾"}, "time": "12h"}, {"channel": "Influencers", "coll": "ambas", "cover": null, "id": "p2810g", "kind": "whatsapp", "media": [], "mode": "manual", "name": "Orientação de postagem aos influencers", "t": {"text": "Oi, [NOME]! Que bom ter você e o [NOME DO PET] com a gente neste lançamento 🐾\n\nNo seu kit chegaram peças de duas coleções novas da Toh:\n🌿 Natureza Urbana — para quem escolhe pela história e estampa (Floripa, Paraty, Trancoso e Sampa)\n🎨 Colors — para quem escolhe pela cor e combinação (Breeze, Blossom, Lime e Mesh H Candy)\n\nAlgumas orientações para as postagens:\n\n1. QUANDO: só a partir de quarta, 28/10, depois das 12h. Até lá, nada de foto, story ou spoiler das peças, combinado? A gente avisa quando liberar.\n\n2. QUANTOS: um post por coleção, em feed ou Reel. Um com as peças da Natureza Urbana e outro com as da Colors, em dias diferentes, até 7/11. Stories extras são super bem-vindos.\n\n3. NÃO MISTURE: cada post mostra uma coleção só, para cada uma ter o seu momento.\n\n4. MARCAÇÕES: marque @toh na legenda e na foto, e use #tohnaturezaurbana ou #tohcolors conforme a coleção.\n\n5. LINK: nos stories, use o adesivo de link:\n• Natureza Urbana: https://toh.com.br/collections/colecao-natureza-urbana\n• Colors: https://toh.com.br/collections/colecao-colors\n\n6. LIVRE: o jeito de mostrar é seu — passeio, rotina, close nos detalhes. Só pedimos o pet usando as peças e boa luz.\n\nQualquer dúvida, é só chamar. Obrigado pela parceria! 💛\nEquipe Toh"}, "time": "antes de 27/10"}, {"channel": "Instagram", "coll": "colors", "cover": null, "id": "p2810h", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel introdutório Colors", "t": {"caption": ""}, "time": "13h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p2810i", "kind": "stories", "media": [], "mode": "manual", "name": "Story da Colors com link", "t": {}, "time": "13h15"}, {"channel": "Instagram", "coll": "nu", "cover": null, "id": "p2810j", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel introdutório Natureza Urbana", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p2810k", "kind": "stories", "media": [], "mode": "manual", "name": "Story da Natureza Urbana com link", "t": {}, "time": "18h15"}], "title": "Lançamento", "weekday": "Qua", "id": "d2810"}, {"date": "29/10", "order": 8, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "nu", "cover": null, "id": "p2910a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Floripa", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p2910b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Natureza Urbana", "t": {}, "time": "18h15"}], "title": "Floripa", "weekday": "Qui", "id": "d2910"}, {"date": "30/10", "order": 9, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "colors", "cover": null, "id": "p3010a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Breeze", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p3010b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Colors", "t": {}, "time": "18h15"}], "title": "Breeze", "weekday": "Sex", "id": "d3010"}, {"date": "31/10", "order": 10, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "nu", "cover": null, "id": "p3110a", "kind": "reel", "media": [], "mode": "agendado", "name": "Reel de detalhes das estampas", "t": {"caption": "Cada estampa conta a história de um lugar. 🌿\n\nFloripa, Paraty, Trancoso e Sampa de pertinho: as cores, os traços e os detalhes que fazem a Natureza Urbana.\n\nPara quem escolhe pela história e estampa. Qual é a cara do seu pet?\n\nColeção completa no link da bio.\n\n#toh #naturezaurbana #estampa #petlovers #cachorro #gato"}, "time": "18h"}, {"channel": "YouTube", "coll": "nu", "cover": null, "id": "p3110b", "kind": "short", "media": [], "mode": "agendado", "name": "Short de detalhes das estampas", "t": {"description": "Os detalhes das quatro estampas da coleção Natureza Urbana da Toh, para quem escolhe pela história e estampa.\n\nVeja a coleção: https://toh.com.br/collections/colecao-natureza-urbana\nVídeo completo do lançamento: [LINK VÍDEO]\n\n#shorts #toh #naturezaurbana #pets", "title": "Floripa, Paraty, Trancoso e Sampa: as estampas da Natureza Urbana #shorts"}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p3110c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Natureza Urbana", "t": {}, "time": "18h15"}], "title": "Detalhes das estampas", "weekday": "Sáb", "id": "d3110"}, {"date": "1/11", "order": 11, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "nu", "cover": null, "id": "p0111a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Paraty", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p0111b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Natureza Urbana", "t": {}, "time": "18h15"}], "title": "Paraty", "weekday": "Dom", "id": "d0111"}, {"date": "2/11", "order": 12, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "colors", "cover": null, "id": "p0211a", "kind": "reel", "media": [], "mode": "agendado", "name": "Reel de combinação entre cores", "t": {"caption": "Peitoral de uma cor, guia de outra, coleira de outra. Ou tudo igual. Você escolhe. 🎨\n\nBreeze, Blossom e Lime foram pensadas para combinar entre si — e o Mesh H Candy junta tudo numa peça só.\n\nPara quem escolhe pela cor e combinação. Qual dupla você montaria?\n\nColeção Colors no link da bio.\n\n#toh #colors #combinacao #petlovers #cachorro"}, "time": "18h"}, {"channel": "YouTube", "coll": "colors", "cover": null, "id": "p0211b", "kind": "short", "media": [], "mode": "agendado", "name": "Short de combinação entre cores", "t": {"description": "Breeze, Blossom e Lime: três cores sólidas para montar peitoral, guia e coleira do seu jeito, e o Mesh H Candy. Para quem escolhe pela cor e combinação.\n\nVeja a coleção: https://toh.com.br/collections/colecao-colors\nVídeo completo do lançamento: [LINK VÍDEO]\n\n#shorts #toh #colors #pets", "title": "Como combinar as cores da coleção Colors da Toh #shorts"}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p0211c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Colors", "t": {}, "time": "18h15"}], "title": "Combinação entre cores", "weekday": "Seg", "id": "d0211"}, {"date": "3/11", "order": 13, "phase": "Pós-lançamento", "pieces": [{"channel": "E-mail", "coll": "colors", "cover": null, "id": "p0311a", "kind": "email", "media": [], "mode": "agendado", "name": "E-mail Colors em detalhe", "note": "As cores e a combinação.", "t": {}, "time": "10h"}, {"channel": "Instagram", "coll": "colors", "cover": null, "id": "p0311b", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Blossom", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p0311c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Colors", "t": {}, "time": "18h15"}], "title": "Blossom e e-mail Colors", "weekday": "Ter", "id": "d0311"}, {"date": "4/11", "order": 14, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "nu", "cover": null, "id": "p0411a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Trancoso", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p0411b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Natureza Urbana", "t": {}, "time": "18h15"}], "title": "Trancoso", "weekday": "Qua", "id": "d0411"}, {"date": "5/11", "order": 15, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "colors", "cover": null, "id": "p0511a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Lime", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p0511b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Colors", "t": {}, "time": "18h15"}], "title": "Lime", "weekday": "Qui", "id": "d0511"}, {"date": "6/11", "order": 16, "phase": "Pós-lançamento", "pieces": [{"channel": "E-mail", "coll": "nu", "cover": null, "id": "p0611a", "kind": "email", "media": [], "mode": "agendado", "name": "E-mail Natureza Urbana em detalhe", "note": "As quatro estampas.", "t": {}, "time": "10h"}, {"channel": "Instagram", "coll": "nu", "cover": null, "id": "p0611b", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Sampa", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "nu", "cover": null, "id": "p0611c", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Natureza Urbana", "t": {}, "time": "18h15"}], "title": "Sampa e e-mail Natureza Urbana", "weekday": "Sex", "id": "d0611"}, {"date": "7/11", "order": 17, "phase": "Pós-lançamento", "pieces": [{"channel": "Instagram", "coll": "colors", "cover": null, "id": "p0711a", "kind": "carrossel", "media": [], "mode": "agendado", "name": "Carrossel Mesh H Avulso Candy", "t": {"caption": ""}, "time": "18h"}, {"channel": "Instagram Stories", "coll": "colors", "cover": null, "id": "p0711b", "kind": "stories", "media": [], "mode": "manual", "name": "Repost com link da Colors", "t": {}, "time": "18h15"}], "title": "Mesh H Candy", "weekday": "Sáb", "id": "d0711"}], "mediaBase": "media/", "files": {}, "form": {"action": "https://docs.google.com/forms/d/e/1FAIpQLSfvwrDqhr6b1Hhf996lc6tJ2RX5arLtR8WIAYW6Ag-0Jc6UFQ/formResponse", "entries": {"name": "entry.408382580", "day": "entry.242676126", "piece": "entry.1759782300", "status": "entry.2052837369", "note": "entry.2118790899"}}};</script><script>
+(function(){
+"use strict";
+var OFF = window.__OFFLINE__ || window.__STATIC__ || null;
+var FORM = OFF && OFF.form ? OFF.form : null;
+var LOGO = '<svg viewBox="46.6 82.1 3152.1 1500" role="img" aria-label="Toh"><path d="M1581.5,1159.3c73.8-18.5,112.4-113.2,105.4-182.6-6-59.5-62.7-128.5-127.9-92.4-28.5,15.8-47.8,46-61.3,74.7-18.2,38.7-28.2,85.7-20.1,128.2,7.6,39.5,39.4,72.2,80.7,74.5,8,.4,15.8-.4,23.3-2.3ZM2253.6,87.3c52.2-10.7,104.4-5.3,151.4,20.5,48.2,26.4,86.6,77.4,101.9,129.9,12.6,43.4,17.3,93,17.7,138.1.3,34.6-2,69.3-4.2,103.9-3.2,50.2-9.2,100.2-7.4,150.6.7,19.1-3.4,51.2,17.6,61.5,6.9,3.4,15.100,3.6,22.6,2,38.4-8.1,69.7-35.5,107.1-46.9,40.7-12.4,83.7-14.3,125.4-6,32.2,6.5,63,18.5,92.2,33.5,35.9,18.4,69.3,45.6,97.9,73.9,94.1,93.1,150.7,211.5,190.7,336.1,31.8,99.2,42.3,211.7,21.4,314.2-11.5,56.4-37.4,109.7-81.6,147.5-31.3,26.8-67,34.4-107.3,31.4-59.7-4.4-118.7-31.9-160.6-74.7-37.9-38.8-60.5-89.9-76-141.2-3.4-11.4-6.5-22.8-9.4-34.4-6.9-27.9-12.1-55.9-20.4-84.2-9.5-32.6-16.7-72.2-39.1-99.4-13.8-16.9-33.8-27.5-55.5-29.4-83.4-8-94.5,91.3-110.9,150.8-6.9,24.4-14,49.3-22.6,73.2-40.5,111.7-136.7,170.9-255.3,159-59.8-6.1-113.9-37.9-148.4-87.1-15.3-21.8-25.3-46.7-35.4-71.2-8.2-19.8-16.3-50-37.1-60.5-29-14.5-60.3,23.8-79.2,40.4-24.8,21.8-49.4,43.9-76.4,62.9-60.7,42.6-128.6,75.1-199.9,95.5-152.6,43.7-318.6,41.9-449.2-58.6-11.5-8.9-23.2-17.8-33.8-27.8-19.4-17.2-39.1-44.8-63.3-52.6-44-14.2-77.7,56.1-93.5,85.7-28.7,53.4-65.2,102.9-120.9,130.2-61.8,30.3-136,36.8-201.7,15.7-49.5-15.8-94.7-51.4-122.9-95-92.7-143.6-54-344.5-34.6-504.3,7.2-59,18.6-109.7,15.7-171.3-.9-18.9.2-53.1-10.3-69.1-45.9-69.7-189.6-26.4-259.6-23.3-43.7,1.9-80.2,6.4-122-4.5-55.4-14.6-103.2-54.3-121.4-109.4-31-93.5,25.4-191,97-248.7,47.2-38,103.8-57.5,160.1-77.8,52.6-18.8,105.9-35.4,159.8-49.7,115.2-30.7,233.4-57.5,350.9-76.3,196-31.4,383.1-53.9,582-36.8,247,21.2,306,254.3,127.6,413.7-114.6,102.4-240.5,95.7-381.3,126-33.4,7-71,20.3-88.9,51.1-29.6,50.5-24.3,200.5,28.9,230.7,7.5,4.2,16,6.2,24.6,5.9,9-.3,22-4.3,29.1-9.9,58.8-46.5,98.2-113.3,150.3-166.6,21.6-22.1,43.4-44.1,67.4-63.6,73.4-60,159-103.1,250.9-126.3,14.1-3.7,30.1-5.6,44.2-8.3,53-9.8,109-8.9,159.8,10.5,46.7,17.9,85.4,52.7,113.3,93.7,31.5,46.1,46.5,99.9,65.6,151.7,2.1,5.8,11.5,37,21.8,33.3,13.7-4.9,13-34.8,14.3-46.1,4.6-42,5.4-84,5.4-126.3,0-19.8-.5-39.6.2-59.3,6.1-168.6-4.4-403.2,159.6-504.9,17.2-10.7,36-17.2,55.6-21.3Z"/></svg>';
+
+var KINDS = {
+  reel:{label:"Reel", chan:"Instagram", fields:[["caption","Legenda"]], wide:false},
+  carrossel:{label:"Carrossel", chan:"Instagram", fields:[["caption","Legenda"]]},
+  stories:{label:"Stories", chan:"Instagram Stories", fields:[["text","Texto e observações"]]},
+  short:{label:"Short", chan:"YouTube", fields:[["title","Título"],["description","Descrição"]]},
+  youtube:{label:"Vídeo completo", chan:"YouTube", fields:[["title","Título"],["description","Descrição"]], wide:true},
+  email:{label:"E-mail", chan:"E-mail", fields:[["subject","Assunto"],["preheader","Pré-cabeçalho"],["body","Texto"],["button","Botão"]], wide:true},
+  whatsapp:{label:"Mensagem", chan:"Grupo VIP", fields:[["text","Texto"]]}
+};
+var COLL = {colors:"Colors", nu:"Natureza Urbana", ambas:"As duas coleções"};
+
+var S = {days:[], reviews:{}, profiles:{}, uid:null, canEdit:false, editMode:false, idx:0, editing:{}, confirmDel:null,
+  db:null, user:null, assets:null, downloads:null, ready:false, err:"", toast:"", keepScroll:true, car:{}, pending:false, hashDone:false,
+  offline:!!OFF, local:{name:"", items:{}}};
+
+/* ---------- helpers ---------- */
+function el(tag, props){
+  var e = document.createElement(tag), kids = Array.prototype.slice.call(arguments, 2);
+  if (props) for (var k in props){
+    var v = props[k]; if (v == null || v === false) continue;
+    if (k.slice(0,2) === "on") e.addEventListener(k.slice(2), v);
+    else if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else if (k === "html") e.innerHTML = v;
+    else if (k === "value") e.value = v;
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  (function add(list){ list.forEach(function(c){ if (c == null || c === false) return; if (Array.isArray(c)) add(c); else e.append(c.nodeType ? c : document.createTextNode(String(c))); }); })(kids);
+  return e;
+}
+function src(m){ if (!m) return ""; if (!OFF) return "/_blob/" + m.id; if (OFF.media) return OFF.media[m.id] || ""; return (OFF.mediaBase || "") + ((OFF.files && OFF.files[m.id]) || m.id); }
+function media(m, opts){
+  opts = opts || {};
+  if (!m) return null;
+  if (m.type === "video") return el("video", {src:src(m), controls:true, playsinline:true, preload:"metadata", poster: opts.poster ? src(opts.poster) : null});
+  return el("img", {src:src(m), alt: opts.alt || "", loading:"lazy"});
+}
+function empty(text, cls){ return el("div", {class:"empty " + (cls||"")}, text); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function myItems(){ if (S.offline) return S.local.items; var r = S.reviews[S.uid]; return (r && r.items) || {}; }
+function day(i){ return S.days[i-1]; }
+function phaseOf(d){ return d.phase || ""; }
+function piecesOf(d){ return (d && d.pieces) || []; }
+function toast(msg, sticky){ S.toast = msg; clearTimeout(toast.t); if (!sticky && msg) toast.t = setTimeout(function(){ S.toast=""; paintToast(); }, 4200); paintToast(); }
+function paintToast(){ var t = document.getElementById("toast"); if (!t) return; t.textContent = S.toast; t.hidden = !S.toast; }
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k) || "null"); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+/* ---------- render scheduling ---------- */
+function busy(){
+  var a = document.activeElement;
+  if (a && a.closest && a.closest("#app") && /^(TEXTAREA|INPUT|SELECT)$/.test(a.tagName)) return true;
+  var vs = document.querySelectorAll("#app video");
+  for (var i=0;i<vs.length;i++) if (!vs[i].paused && !vs[i].ended) return true;
+  return false;
+}
+var rq = 0;
+function schedule(){ cancelAnimationFrame(rq); rq = requestAnimationFrame(render); }
+document.addEventListener("focusout", function(){ setTimeout(function(){ if (S.pending) render(); }, 30); });
+document.addEventListener("pause", function(){ if (S.pending) render(); }, true);
+document.addEventListener("ended", function(){ if (S.pending) render(); }, true);
+
+function render(force){
+  if (!force && busy()){ S.pending = true; return; }
+  S.pending = false;
+  var y = window.scrollY, app = document.getElementById("app");
+  if (S.idx > S.days.length) S.idx = S.days.length;
+  var body;
+  if (S.err) body = el("div", {class:"notice"}, el("h2", {text:"Algo deu errado"}), el("p", {text:S.err}));
+  else if (!S.ready) body = el("div", {class:"notice"}, el("h2", {text:"Carregando as peças…"}), el("p", {class:"lead", text:"A apresentação abre em instantes."}));
+  else if (S.noStore) body = el("div", {class:"notice"}, el("h2", {text:"Abra esta página pelo link do Claude"}), el("p", {class:"lead", text:"As peças ficam guardadas no Claude. Abra o link que você recebeu, já conectado à sua conta."}));
+  else body = S.idx === 0 ? coverPage() : dayPage(day(S.idx), S.idx);
+  app.replaceChildren(topBar(), el("main", {class:"page", id:"main"}, body), el("div", {class:"toast", id:"toast", role:"status", hidden: !S.toast}, S.toast));
+  restoreCarousels();
+  if (S.keepScroll) window.scrollTo(0, y); else { window.scrollTo(0, 0); S.keepScroll = true; }
+  var cur = document.querySelector('.chip[aria-current="true"]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:"nearest", inline:"nearest"});
+}
+function go(i){ if (i < 0 || i > S.days.length) return; S.idx = i; S.keepScroll = false; S.confirmDel = null; render(true); }
+document.addEventListener("keydown", function(e){
+  var t = e.target; if (t && /^(TEXTAREA|INPUT|SELECT|VIDEO)$/.test(t.tagName)) return;
+  if (e.key === "ArrowRight") go(S.idx + 1); else if (e.key === "ArrowLeft") go(S.idx - 1);
+});
+
+/* ---------- top bar ---------- */
+function dayStatus(d){
+  var it = myItems(), ps = piecesOf(d), done = 0, fix = false;
+  ps.forEach(function(p){ var r = it[p.id]; if (r){ done++; if (r.s === "fix") fix = true; } });
+  return {done:done, total:ps.length, fix:fix};
+}
+function topBar(){
+  var chips = [el("button", {class:"chip", "aria-current": S.idx===0 ? "true" : "false", onclick:function(){ go(0); }}, "Capa")];
+  S.days.forEach(function(d, i){
+    var st = dayStatus(d), reviewing = !S.editMode;
+    chips.push(el("button", {class:"chip", title: d.weekday + " " + d.date + " · " + d.title, "aria-current": S.idx===i+1 ? "true" : "false", onclick:function(){ go(i+1); }},
+      d.date, reviewing && st.total && st.done === st.total ? el("i", {class:"dot" + (st.fix ? " fix" : "")}) : null));
+  });
+  var tools = el("div", {class:"tools"});
+  if (S.canEdit && !S.offline){
+    tools.append(el("label", {class:"switch"}, el("input", {type:"checkbox", id:"editmode", checked: S.editMode || null, onchange:function(e){ S.editMode = e.target.checked; S.editing = {}; render(true); }}), "Modo edição"));
+    tools.append(el("button", {class:"btn small", onclick: exportOffline, disabled: !S.downloads || null, title:"Gera um arquivo .html com todas as peças, para quem não tem acesso ao Claude"}, "Baixar versão offline"));
+  }
+  if (S.offline){
+    tools.append(el("div", {class:"offname"}, el("input", {type:"text", id:"offname", placeholder:"Seu nome", value:S.local.name, oninput:function(e){ S.local.name = e.target.value; lsSet("toh-pecas-parecer", S.local); }})));
+    if (!FORM) tools.append(el("button", {class:"btn small brand", onclick: copyReport}, "Copiar meu parecer"));
+  }
+  return el("header", {class:"bar"}, el("div", {class:"bar-in"},
+    el("div", {class:"brand", html: LOGO}, el("b", {text:"Peças do lançamento"})),
+    el("button", {class:"navbtn", "aria-label":"Dia anterior", disabled: S.idx===0 || null, onclick:function(){ go(S.idx-1); }}, "‹"),
+    el("nav", {class:"strip", "aria-label":"Dias da campanha"}, chips),
+    el("button", {class:"navbtn", "aria-label":"Próximo dia", disabled: S.idx>=S.days.length || null, onclick:function(){ go(S.idx+1); }}, "›"),
+    tools));
+}
+
+/* ---------- cover ---------- */
+function collsOf(d){ var seen = {}; piecesOf(d).forEach(function(p){ seen[p.coll || "ambas"] = 1; }); return Object.keys(seen); }
+function coverPage(){
+  var cards = S.days.map(function(d, i){
+    var st = dayStatus(d), missing = piecesOf(d).filter(function(p){ return !hasMedia(p); }).length;
+    var line = S.editMode ? (missing ? missing + " de " + st.total + " peças sem arquivo" : "Todas as peças com arquivo") : (st.done + " de " + st.total + " avaliadas por você");
+    return el("button", {class:"dcard", onclick:function(){ go(i+1); }},
+      el("span", {class:"w", text: d.weekday + " · " + phaseOf(d)}),
+      el("span", {class:"d", text: d.date}),
+      el("span", {class:"t", text: d.title}),
+      el("span", {class:"colls"}, collsOf(d).map(function(c){ return el("i", {class:"c-" + c, title: COLL[c]}); })),
+      el("span", {class:"m", text: st.total + (st.total === 1 ? " peça" : " peças") + " · " + line}),
+      S.editMode ? null : el("span", {class:"meter"}, el("b", {style:"width:" + (st.total ? Math.round(st.done/st.total*100) : 0) + "%"})));
+  });
+  return [
+    el("section", {class:"hero"},
+      el("span", {class:"pill", text:"Aprovação das peças · Lançamento 28/10"}),
+      el("h1", {text:"Duas coleções novas. Dois jeitos de escolher."}),
+      el("p", {class:"lead", text:"Cada página é um dia da campanha, de 21/10 a 7/11, com as peças no formato em que vão ao ar: dê play nos vídeos, passe as lâminas dos carrosséis e leia as legendas."}),
+      el("ol", {class:"steps"},
+        el("li", {text:"Abra um dia pela lista abaixo ou passe as páginas com as setas (← → no teclado)."}),
+        el("li", {text:"Em cada peça, clique em Aprovar ou em Pedir ajuste e escreva o que mudar."}),
+        el("li", {text: FORM ? "Antes de começar, escreva seu nome no campo do topo. Cada parecer é enviado na hora para o marketing, e você pode mudar quando quiser." : S.offline ? "No fim, preencha seu nome no topo e clique em Copiar meu parecer para colar no e-mail ou WhatsApp." : "Seu parecer fica salvo na hora, e você pode voltar e mudar quando quiser."})),
+      el("div", {class:"legend"},
+        el("span", null, el("i", {class:"c-colors"}), "Colors"),
+        el("span", null, el("i", {class:"c-nu"}), "Natureza Urbana"),
+        el("span", null, el("i", {class:"c-ambas"}), "As duas coleções"))),
+    S.editMode ? reviewsPanel() : null,
+    S.days.length ? el("section", {class:"days", "aria-label":"Dias"}, cards) : el("div", {class:"notice"}, el("p", {text:"Nenhum dia cadastrado ainda."}))
+  ];
+}
+function hasMedia(p){ return (p.media && p.media.length) || p.cover; }
+function reviewsPanel(){
+  var ids = Object.keys(S.reviews).filter(function(id){ var it = S.reviews[id] && S.reviews[id].items; return it && Object.keys(it).length; });
+  if (!ids.length) return el("section", {class:"panel"}, el("h2", {text:"Pareceres da diretoria"}), el("p", {class:"lead", text:"Nenhum parecer ainda. Quando um diretor marcar uma peça, ele aparece aqui, com os ajustes pedidos."}));
+  var index = {}; S.days.forEach(function(d, i){ piecesOf(d).forEach(function(p){ index[p.id] = {d:d, i:i, p:p}; }); index["day:" + d.id] = {d:d, i:i, p:null}; });
+  var people = ids.map(function(id){
+    var it = S.reviews[id].items, ok = 0, fx = 0; Object.keys(it).forEach(function(k){ if (k.indexOf("day:") === 0) return; if (it[k].s === "ok") ok++; else if (it[k].s === "fix") fx++; });
+    var pr = S.profiles[id] || {};
+    return el("span", {class:"person"}, pr.avatarUrl ? el("img", {src:pr.avatarUrl, alt:""}) : null, el("b", {text: pr.name || "Diretor"}), " " + ok + " aprovadas · " + fx + " ajustes");
+  });
+  var fixes = [];
+  ids.forEach(function(id){ var it = S.reviews[id].items; Object.keys(it).forEach(function(k){
+    var r = it[k], ref = index[k]; if (!ref) return;
+    if ((r.s === "fix") || (k.indexOf("day:") === 0 && r.note)) fixes.push({id:id, r:r, ref:ref});
+  }); });
+  fixes.sort(function(a, b){ return a.ref.i - b.ref.i; });
+  return el("section", {class:"panel"}, el("h2", {text:"Pareceres da diretoria"}), el("div", {class:"who"}, people),
+    fixes.length ? el("ul", {class:"fixlist"}, fixes.map(function(f){
+      var pr = S.profiles[f.id] || {};
+      return el("li", null, el("a", {onclick:function(){ go(f.ref.i + 1); }, text: f.ref.d.date + " · " + (f.ref.p ? f.ref.p.name : "Comentário do dia")}),
+        el("span", {text: (pr.name || "Diretor") + ": " + (f.r.note || "Pediu ajuste, sem comentário.")}));
+    })) : el("p", {class:"hint", text:"Nenhum ajuste pedido até agora."}));
+}
+
+/* ---------- day page ---------- */
+function dayPage(d, i){
+  var ps = piecesOf(d), chans = [];
+  ps.forEach(function(p){ var c = p.channel || KINDS[p.kind].chan; if (chans.indexOf(c) < 0) chans.push(c); });
+  var grid = el("section", {class:"grid"}, ps.map(function(p, k){ return pieceCard(d, p, k); }));
+  if (S.editMode) grid.append(addPieceCard(d));
+  return [
+    el("section", {class:"dayhead"},
+      el("span", {class:"pill", text: phaseOf(d) + " · " + d.weekday + " " + d.date}),
+      el("h1", {text: d.title}),
+      el("div", {class:"daymeta"}, el("span", {text: ps.length + (ps.length === 1 ? " peça" : " peças")}), chans.length ? el("span", {text: chans.join(", ")}) : null,
+        el("span", {class:"colls"}, collsOf(d).map(function(c){ return el("i", {class:"c-" + c, title: COLL[c]}); }))),
+      d.note ? el("p", {class:"lead", text: d.note}) : null),
+    ps.length || S.editMode ? grid : el("div", {class:"notice"}, el("p", {text:"Nenhuma peça neste dia."})),
+    S.editMode ? null : dayNote(d),
+    el("nav", {class:"pager"},
+      el("button", {class:"btn", onclick:function(){ go(i-1); }}, i === 1 ? "‹ Capa" : "‹ " + day(i-1).date),
+      i < S.days.length ? el("button", {class:"btn solid", onclick:function(){ go(i+1); }}, day(i+1).date + " · " + day(i+1).title + " ›") : el("button", {class:"btn solid", onclick:function(){ go(0); }}, "Voltar à capa"))
+  ];
+}
+
+function pieceCard(d, p, k){
+  var K = KINDS[p.kind] || KINDS.reel, editing = S.editMode && S.editing[p.id];
+  var card = el("article", {class:"piece" + (K.wide ? " wide" : ""), id:"p-" + p.id},
+    el("div", {class:"ph"},
+      p.time ? el("span", {class:"time", text:p.time}) : null,
+      el("span", {class:"tag " + (p.coll || "ambas"), text: COLL[p.coll || "ambas"]}),
+      p.mode ? el("span", {class:"tag mode", text:p.mode}) : null),
+    el("div", {class:"chan", text: (p.channel || K.chan) + " · " + K.label}),
+    el("h3", {text: p.name || K.label}),
+    preview(p, d),
+    editing ? editFields(d, p) : texts(p));
+  if (S.editMode){ var vd = verdicts(p.id); if (vd) card.append(vd); card.append(editTools(d, p, k)); }
+  else card.append(reviewBox(p.id));
+  return card;
+}
+
+function texts(p){
+  var K = KINDS[p.kind] || KINDS.reel, t = p.t || {};
+  var shown = K.fields.filter(function(f){ return p.kind !== "email" && p.kind !== "whatsapp" || f[0] === "__"; });
+  if (p.kind === "email" || p.kind === "whatsapp") return el("div", {class:"texts"}, p.note ? field("Observação", p.note) : null);
+  return el("div", {class:"texts"}, shown.map(function(f){ return field(f[1], t[f[0]]); }), p.note ? field("Observação", p.note) : null);
+}
+function field(label, value){
+  return el("div", {class:"field"}, el("span", {class:"lab", text:label}),
+    el("p", {class:"val" + (value ? "" : " muted"), text: value || "Texto em produção"}));
+}
+
+/* ---------- previews ---------- */
+function preview(p, d){
+  var m = p.media || [], t = p.t || {};
+  switch (p.kind){
+    case "reel":
+    case "short":
+      return el("div", {class:"covers"},
+        m[0] ? el("div", {class:"frame v916"}, media(m[0], {poster:p.cover})) : empty(p.kind === "reel" ? "Vídeo do Reel em produção" : "Vídeo do Short em produção", "v916"),
+        p.kind === "reel" && p.cover ? el("div", {class:"mini"}, el("div", {class:"frame cover"}, media(p.cover)), el("span", {class:"subcap", text:"Capa no perfil"})) : null);
+    case "carrossel": return carousel(p);
+    case "stories":
+      return el("div", {class:"stories"}, m.length ? m.map(function(x){ return el("div", {class:"frame"}, media(x)); }) : empty("Stories em produção"));
+    case "youtube":
+      return el("div", {class:"yt"},
+        m[0] ? el("div", {class:"frame v169"}, media(m[0], {poster:p.cover})) : empty("Vídeo completo em produção", "v169"),
+        el("span", {class:"subcap", text:"Como aparece no YouTube"}),
+        el("div", {class:"ytres"}, p.cover ? el("div", {class:"frame cover"}, media(p.cover)) : empty("Thumbnail", "v169"),
+          el("div", null, el("b", {text: t.title || "Título em produção"}), el("small", {text:"Toh · canal oficial"}))));
+    case "email":
+      return el("div", {class:"mail"},
+        el("div", {class:"inbox"}, el("span", {class:"av", html:LOGO}), el("div", {class:"l"}, el("b", {text:"Toh"}), el("span", {class:"s", text: t.subject || "Assunto em produção"}), el("span", {class:"p", text: t.preheader || "Pré-cabeçalho em produção"}))),
+        el("div", {class:"mailbody"},
+          p.cover ? el("div", {class:"art"}, media(p.cover)) : empty("Arte do e-mail em produção"),
+          (m.length ? el("div", {class:"art"}, m.map(function(x){ return media(x); })) : null),
+          el("p", {class:t.body ? "" : "hint", text: t.body || "Texto do e-mail em produção"}),
+          t.button ? el("span", {class:"cta", text:t.button}) : null));
+    case "whatsapp":
+      return el("div", {class:"chat"},
+        el("div", {class:"chathead"}, el("span", {class:"av", html:LOGO}), el("span", {text: p.channel === "Influencers" ? "Conversa com influencer" : "Grupo VIP Toh"})),
+        el("div", {class:"bubble"}, m.map(function(x){ return el("div", {class:"att"}, media(x)); }),
+          el("p", {text: t.text || "Texto em produção"}), el("small", {text: (p.time || "").replace("h", ":").replace(/:$/, ":00")})));
+  }
+  return null;
+}
+
+function carousel(p){
+  var m = p.media || [];
+  if (!m.length) return empty("Lâminas do carrossel em produção", "v45");
+  var id = p.id, track, count, thumbs;
+  function show(n){ track.scrollTo({left: n * track.clientWidth, behavior: "smooth"}); }
+  function cur(){ return Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); }
+  function sync(){ var n = cur(); S.car[id] = n; count.textContent = (n + 1) + " / " + m.length;
+    Array.prototype.forEach.call(thumbs.children, function(b, j){ b.setAttribute("aria-current", j === n ? "true" : "false"); }); }
+  track = el("div", {class:"track", "data-car":id, tabindex:"0", "aria-label":"Lâminas do carrossel", onscroll: function(){ clearTimeout(track.t); track.t = setTimeout(sync, 60); }},
+    m.map(function(x){ return el("div", {class:"slide"}, media(x)); }));
+  count = el("span", {class:"count", text:"1 / " + m.length});
+  thumbs = el("div", {class:"thumbs"}, m.map(function(x, j){ return el("button", {class:"thumb", "aria-label":"Lâmina " + (j+1), "aria-current": j===0 ? "true" : "false", onclick:function(){ show(j); }}, media(x), el("span", {text: j+1})); }));
+  return el("div", {class:"carwrap", style:"display:flex;flex-direction:column;gap:10px"},
+    el("div", {class:"car"}, track,
+      m.length > 1 ? el("button", {class:"carnav prev", "aria-label":"Lâmina anterior", onclick:function(){ show(Math.max(0, cur()-1)); }}, "‹") : null,
+      m.length > 1 ? el("button", {class:"carnav next", "aria-label":"Próxima lâmina", onclick:function(){ show(Math.min(m.length-1, cur()+1)); }}, "›") : null,
+      count),
+    el("span", {class:"subcap", text: m.length + " lâminas"}), thumbs);
+}
+function restoreCarousels(){
+  document.querySelectorAll(".track[data-car]").forEach(function(t){ var n = S.car[t.getAttribute("data-car")] || 0; if (n){ t.scrollLeft = n * t.clientWidth; t.dispatchEvent(new Event("scroll")); } });
+}
+
+/* ---------- reviewing ---------- */
+function reviewBox(pid){
+  var r = myItems()[pid] || null;
+  var box = el("div", {class:"review"},
+    el("div", {class:"rbtns"},
+      el("button", {class:"rb ok", "aria-pressed": r && r.s === "ok" ? "true" : "false", onclick:function(){ setReview(pid, r && r.s === "ok" ? null : "ok", ""); }}, "Aprovar"),
+      el("button", {class:"rb fix", "aria-pressed": r && r.s === "fix" ? "true" : "false", onclick:function(){ setReview(pid, r && r.s === "fix" ? null : "fix", r ? r.note || "" : ""); setTimeout(function(){ var ta = document.getElementById("note-" + pid); if (ta) ta.focus(); }, 60); }}, "Pedir ajuste")));
+  if (r && r.s === "fix") box.append(el("div", {class:"field"}, el("label", {for:"note-" + pid, text:"O que ajustar?"}),
+    el("textarea", {id:"note-" + pid, value: r.note || "", placeholder:"Descreva o ajuste: texto, imagem, horário…", onchange:function(e){ setReview(pid, "fix", e.target.value); }})));
+  if (!S.offline && !S.uid) box.append(el("p", {class:"hint", text:"Entre na sua conta do Claude para registrar o parecer."}));
+  return box;
+}
+function setReview(pid, s, note){
+  var items = clone(myItems());
+  if (!s) delete items[pid]; else items[pid] = {s:s, note:note || "", at: Date.now()};
+  if (S.offline){
+    if (FORM && !S.local.name.trim()){ toast("Escreva seu nome no campo do topo antes de avaliar."); var nf = document.getElementById("offname"); if (nf) nf.focus(); return; }
+    S.local.items = items; lsSet("toh-pecas-parecer", S.local); render(true);
+    if (FORM) sendForm(pid, s, note);
+    return; }
+  if (!S.db || !S.uid){ toast("Entre na sua conta do Claude para registrar o parecer."); return; }
+  S.reviews[S.uid] = {items:items}; render(true);
+  S.db.doc("reviews/" + S.uid).set({items:items}).then(function(){ if (s) toast(s === "ok" ? "Peça aprovada." : "Pedido de ajuste salvo."); }).catch(function(){ toast("Não foi possível salvar seu parecer. Verifique a conexão e tente de novo."); });
+}
+function dayNote(d){
+  var key = "day:" + d.id, r = myItems()[key];
+  return el("section", {class:"daynote"}, el("label", {class:"subcap", for:"dn-" + d.id, text:"Comentário geral sobre o dia (opcional)"}),
+    el("textarea", {id:"dn-" + d.id, value: r ? r.note : "", placeholder:"Algo sobre o conjunto do dia: ordem, horários, tom…",
+      onchange:function(e){ setReview(key, e.target.value.trim() ? "note" : null, e.target.value); }}));
+}
+function verdicts(pid){
+  var rows = [];
+  Object.keys(S.reviews).forEach(function(id){ var it = S.reviews[id] && S.reviews[id].items; var r = it && it[pid]; if (!r) return;
+    var pr = S.profiles[id] || {};
+    rows.push(el("div", {class:"verdict " + r.s}, pr.avatarUrl ? el("img", {src:pr.avatarUrl, alt:""}) : null,
+      el("p", null, el("b", {text: (pr.name || "Diretor") + (r.s === "ok" ? ": aprovou" : ": pediu ajuste")}), r.note ? "\n" + r.note : "")));
+  });
+  return rows.length ? el("div", {class:"verdicts"}, rows) : null;
+}
+function sendForm(pid, s, note){
+  var dayName = "", pieceName = "";
+  S.days.forEach(function(d){ if ("day:" + d.id === pid){ dayName = d.weekday + " " + d.date + " · " + d.title; pieceName = "Comentário geral do dia"; }
+    piecesOf(d).forEach(function(p){ if (p.id === pid){ dayName = d.weekday + " " + d.date + " · " + d.title; pieceName = (p.time ? p.time + " · " : "") + p.name; } }); });
+  var e = FORM.entries, body = new URLSearchParams();
+  body.append(e.name, S.local.name.trim()); body.append(e.day, dayName); body.append(e.piece, pieceName);
+  body.append(e.status, s === "ok" ? "Aprovado" : s === "fix" ? "Pedir ajuste" : s === "note" ? "Comentário" : "Parecer retirado");
+  body.append(e.note, note || "");
+  fetch(FORM.action, {method:"POST", mode:"no-cors", body: body}).then(function(){ if (s) toast(s === "ok" ? "Aprovação enviada." : s === "fix" ? "Pedido de ajuste enviado." : "Comentário enviado."); },
+    function(){ toast("Não foi possível enviar agora. Verifique a internet e clique de novo."); });
+}
+function copyReport(){
+  var it = S.local.items, lines = ["Parecer sobre as peças do lançamento" + (S.local.name ? " · " + S.local.name : ""), ""];
+  S.days.forEach(function(d){
+    var dl = [];
+    piecesOf(d).forEach(function(p){ var r = it[p.id]; if (!r) return; dl.push("- " + (p.time ? p.time + " · " : "") + p.name + ": " + (r.s === "ok" ? "aprovado" : "ajustar" + (r.note ? " — " + r.note : ""))); });
+    var dn = it["day:" + d.id]; if (dn && dn.note) dl.push("- Comentário do dia: " + dn.note);
+    if (dl.length){ lines.push(d.weekday + " " + d.date + " · " + d.title); lines = lines.concat(dl); lines.push(""); }
+  });
+  if (lines.length <= 2){ toast("Marque ao menos uma peça antes de copiar o parecer."); return; }
+  var text = lines.join("\n");
+  function fallback(){ var ta = el("textarea", {style:"position:fixed;inset:20% 10%;width:80%;height:60%;z-index:30", value:text}); document.body.append(ta); ta.select(); toast("Selecionei o texto: copie com Ctrl+C e feche clicando fora.", true); ta.addEventListener("blur", function(){ ta.remove(); toast(""); }); }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function(){ toast("Parecer copiado. Cole no e-mail ou no WhatsApp."); }, fallback); else fallback();
+}
+
+/* ---------- editing (Lucas) ---------- */
+function saveDay(d){
+  clearTimeout(saveDay["t" + d.id]);
+  saveDay["t" + d.id] = setTimeout(function(){
+    S.db.doc("days/" + d.id).update({pieces: d.pieces}).catch(function(){ toast("Não foi possível salvar a alteração. Verifique a conexão e tente de novo."); });
+  }, 250);
+}
+function editTools(d, p, k){
+  var ps = d.pieces, editing = S.editing[p.id];
+  function move(dir){ var j = k + dir; if (j < 0 || j >= ps.length) return; ps.splice(j, 0, ps.splice(k, 1)[0]); saveDay(d); render(true); }
+  return el("div", {class:"edittools"},
+    el("button", {class:"btn small" + (editing ? " solid" : ""), onclick:function(){ if (editing) delete S.editing[p.id]; else S.editing[p.id] = 1; render(true); }}, editing ? "Concluir edição" : "Editar peça"),
+    el("button", {class:"btn small", disabled: k === 0 || null, onclick:function(){ move(-1); }, "aria-label":"Mover para antes"}, "↑"),
+    el("button", {class:"btn small", disabled: k === ps.length-1 || null, onclick:function(){ move(1); }, "aria-label":"Mover para depois"}, "↓"),
+    S.confirmDel === p.id
+      ? el("button", {class:"btn small brand", onclick:function(){ ps.splice(k, 1); S.confirmDel = null; saveDay(d); render(true); }}, "Confirmar exclusão")
+      : el("button", {class:"btn small", onclick:function(){ S.confirmDel = p.id; render(true); }}, "Excluir"));
+}
+function editFields(d, p){
+  var K = KINDS[p.kind], t = p.t = p.t || {};
+  function inp(id, label, val, set){ return el("div", {class:"field"}, el("label", {for:id, text:label}), el("input", {type:"text", id:id, value: val || "", onchange:function(e){ set(e.target.value); saveDay(d); }})); }
+  function sel(id, label, val, opts, set){ return el("div", {class:"field"}, el("label", {for:id, text:label}), el("select", {id:id, onchange:function(e){ set(e.target.value); saveDay(d); render(true); }},
+    opts.map(function(o){ return el("option", {value:o[0], selected: o[0] === val || null}, o[1]); }))); }
+  var wrap = el("div", {class:"texts"},
+    el("div", {class:"metaedit"},
+      inp("nm-" + p.id, "Nome da peça", p.name, function(v){ p.name = v; }),
+      inp("tm-" + p.id, "Horário", p.time, function(v){ p.time = v; }),
+      inp("ch-" + p.id, "Canal", p.channel, function(v){ p.channel = v; }),
+      sel("cl-" + p.id, "Coleção", p.coll || "ambas", [["colors","Colors"],["nu","Natureza Urbana"],["ambas","As duas"]], function(v){ p.coll = v; }),
+      sel("md-" + p.id, "Publicação", p.mode || "agendado", [["agendado","agendado"],["manual","manual"]], function(v){ p.mode = v; })),
+    K.fields.map(function(f){ var id = "f-" + f[0] + "-" + p.id;
+      return el("div", {class:"field"}, el("label", {for:id, text:f[1]}), el("textarea", {id:id, value: t[f[0]] || "", onchange:function(e){ t[f[0]] = e.target.value; saveDay(d); }})); }),
+    el("div", {class:"field"}, el("label", {for:"no-" + p.id, text:"Observação para a diretoria"}), el("textarea", {id:"no-" + p.id, value: p.note || "", style:"min-height:60px", onchange:function(e){ p.note = e.target.value; saveDay(d); }})),
+    mediaEditor(d, p));
+  return wrap;
+}
+var SLOTS = {
+  reel:{main:"Vídeo do Reel", multi:false, cover:"Capa do Reel"},
+  short:{main:"Vídeo do Short", multi:false},
+  youtube:{main:"Vídeo completo", multi:false, cover:"Thumbnail (1280 x 720)"},
+  carrossel:{main:"Lâminas (na ordem)", multi:true},
+  stories:{main:"Telas dos stories (na ordem)", multi:true},
+  email:{main:"Imagens extras", multi:true, cover:"Arte principal"},
+  whatsapp:{main:"Anexos (imagem ou vídeo)", multi:true}
+};
+function mediaEditor(d, p){
+  var sl = SLOTS[p.kind]; p.media = p.media || [];
+  if (!S.assets) return el("div", {class:"mediaedit"}, el("p", {class:"hint", text:"O envio de arquivos não está disponível nesta visualização. Abra a página pelo Claude com permissão de edição."}));
+  function picker(label, multiple, onfiles){
+    return el("span", {class:"btn small filebtn"}, label, el("input", {type:"file", accept:"image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm", multiple: multiple || null,
+      onchange: function(e){ var fs = Array.prototype.slice.call(e.target.files || []); e.target.value = ""; if (fs.length) upload(fs).then(function(out){ if (out.length){ onfiles(out); saveDay(d); render(true); } }); }}));
+  }
+  function item(m, j, list){
+    return el("div", {class:"mitem"}, el("div", {class:"frame cover"}, m.type === "video" ? el("video", {src:src(m), muted:true, preload:"metadata"}) : el("img", {src:src(m), alt:""})),
+      el("div", {class:"row"},
+        list.length > 1 ? el("button", {"aria-label":"Mover para a esquerda", disabled: j === 0 || null, onclick:function(){ list.splice(j-1, 0, list.splice(j, 1)[0]); saveDay(d); render(true); }}, "‹") : null,
+        el("button", {"aria-label":"Remover", onclick:function(){ list.splice(j, 1); saveDay(d); render(true); }}, "✕"),
+        list.length > 1 ? el("button", {"aria-label":"Mover para a direita", disabled: j === list.length-1 || null, onclick:function(){ list.splice(j+1, 0, list.splice(j, 1)[0]); saveDay(d); render(true); }}, "›") : null));
+  }
+  var box = el("div", {class:"mediaedit"},
+    el("span", {class:"subcap", text: sl.main}),
+    p.media.length ? el("div", {class:"mlist"}, p.media.map(function(m, j){ return item(m, j, p.media); })) : null,
+    picker(p.media.length ? (sl.multi ? "Adicionar arquivos" : "Trocar arquivo") : (sl.multi ? "Enviar arquivos" : "Enviar arquivo"), sl.multi, function(out){ if (sl.multi) p.media = p.media.concat(out); else p.media = [out[0]]; }));
+  if (sl.cover){
+    box.append(el("span", {class:"subcap", text: sl.cover}));
+    if (p.cover) box.append(el("div", {class:"mlist"}, el("div", {class:"mitem"}, el("div", {class:"frame cover"}, el("img", {src:src(p.cover), alt:""})),
+      el("div", {class:"row"}, el("button", {"aria-label":"Remover", onclick:function(){ p.cover = null; saveDay(d); render(true); }}, "✕")))));
+    box.append(el("span", {class:"btn small filebtn"}, p.cover ? "Trocar imagem" : "Enviar imagem", el("input", {type:"file", accept:"image/png,image/jpeg,image/webp",
+      onchange:function(e){ var fs = Array.prototype.slice.call(e.target.files || []); e.target.value = ""; if (fs.length) upload(fs).then(function(out){ if (out.length){ p.cover = out[0]; saveDay(d); render(true); } }); }})));
+  }
+  box.append(el("p", {class:"hint", text:"Imagens JPG, PNG ou WebP e vídeos MP4 de até 20 MB cada. Vídeo .mov precisa ser exportado em MP4."}));
+  return box;
+}
+function upload(files){
+  var out = [], i = 0;
+  function next(){
+    if (i >= files.length){ toast(out.length ? (out.length === 1 ? "Arquivo enviado." : out.length + " arquivos enviados.") : S.toast); return Promise.resolve(out); }
+    var f = files[i++];
+    if (f.size > 20 * 1024 * 1024){ toast(f.name + " tem mais de 20 MB. Comprima o arquivo e envie de novo."); return next(); }
+    if (/quicktime/.test(f.type) || /\.mov$/i.test(f.name)){ toast(f.name + " está em .mov. Exporte em MP4 e envie de novo."); return next(); }
+    var ext = (f.name.split(".").pop() || "").toLowerCase(), map = {jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", webp:"image/webp", gif:"image/gif", mp4:"video/mp4", webm:"video/webm"};
+    var opt = (/^(image|video)\//.test(f.type)) ? undefined : (map[ext] ? {type: map[ext]} : undefined);
+    toast("Enviando " + i + " de " + files.length + "…", true);
+    return S.assets.upload(f, opt).then(function(r){ out.push({id:r.id, type: /^video/.test(r.contentType) ? "video" : "image"}); return next(); },
+      function(e){ var c = e && e.code;
+        toast(c === "too_large" ? f.name + " passou do limite de tamanho." : c === "unsupported_type" ? f.name + " está num formato não aceito. Use JPG, PNG, WebP ou MP4." : c === "quota_or_state" ? "O espaço de arquivos da apresentação acabou. Remova arquivos antigos e tente de novo." : "Não foi possível enviar " + f.name + ". Tente de novo.");
+        return next(); });
+  }
+  return next();
+}
+function addPieceCard(d){
+  var s = el("select", {id:"newkind-" + d.id}, Object.keys(KINDS).map(function(k){ return el("option", {value:k}, KINDS[k].label + " · " + KINDS[k].chan); }));
+  return el("div", {class:"addpiece"}, el("label", {class:"subcap", for:"newkind-" + d.id, text:"Adicionar peça neste dia"}), s,
+    el("button", {class:"btn solid", onclick:function(){
+      var k = s.value, id = "p" + Date.now().toString(36);
+      d.pieces = d.pieces || [];
+      d.pieces.push({id:id, kind:k, channel: KINDS[k].chan, time:"", mode:"agendado", name: KINDS[k].label, coll:"ambas", media:[], cover:null, t:{}});
+      S.editing[id] = 1; saveDay(d); render(true);
+      setTimeout(function(){ var c = document.getElementById("p-" + id); if (c && c.scrollIntoView) c.scrollIntoView({block:"center"}); }, 50);
+    }}, "Adicionar"));
+}
+
+/* ---------- offline export ---------- */
+function exportOffline(){
+  var ids = {}, list = [];
+  S.days.forEach(function(d){ piecesOf(d).forEach(function(p){ (p.media || []).concat(p.cover ? [p.cover] : []).forEach(function(m){ if (!ids[m.id]){ ids[m.id] = 1; list.push(m.id); } }); }); });
+  var parts = [], i = 0;
+  function b64(blob){ return new Promise(function(res, rej){ var fr = new FileReader(); fr.onload = function(){ res(fr.result); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
+  function next(){
+    if (i >= list.length) return Promise.resolve();
+    var id = list[i++]; toast("Preparando a versão offline: arquivo " + i + " de " + list.length + "…", true);
+    return fetch("/_blob/" + id).then(function(r){ return r.blob(); }).then(b64).then(function(u){ parts.push(JSON.stringify(id) + ":" + JSON.stringify(u) + ","); return next(); }, function(){ return next(); });
+  }
+  next().then(function(){
+    var style = document.getElementById("app-style").textContent, script = document.getElementById("app-script").textContent;
+    var days = JSON.stringify(S.days).replace(/</g, "\\u003c");
+    var head = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Peças do Lançamento · Toh</title>'
+      + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"><style>' + style + '</style></head><body><div id="app"></div><script>window.__OFFLINE__={"days":' + days + ',"media":{';
+    var tail = '"_":""}};<\/script><script>' + script.replace(/<\/script/gi, "<\\/script") + '<\/script></body></html>';
+    var blob = new Blob([head].concat(parts, [tail]), {type:"text/html"});
+    toast("Arquivo pronto (" + Math.round(blob.size / 1048576) + " MB). Confirme o download.", true);
+    return S.downloads.save({filename:"pecas-lancamento-toh.html", data: blob}).then(function(){ toast("Versão offline baixada. Envie o arquivo por Drive ou WeTransfer."); },
+      function(e){ toast(e && e.code === "declined" ? "Download cancelado." : "Não foi possível baixar o arquivo agora. Tente de novo."); });
+  });
+}
+
+/* ---------- boot ---------- */
+function readHash(){ var h = (location.hash || "").slice(1); if (!h) return; for (var i=0;i<S.days.length;i++) if (S.days[i].id === h){ S.idx = i + 1; return; } }
+function resolveProfiles(){
+  if (!S.user) return; var ids = Object.keys(S.reviews); if (!ids.length) return;
+  S.user.profiles(ids).then(function(ps){ S.profiles = ps || {}; schedule(); });
+}
+function boot(){
+  if (OFF){ S.days = OFF.days || []; var l = lsGet("toh-pecas-parecer"); if (l && l.items) S.local = l; S.ready = true; readHash(); render(true); return; }
+  render(true);
+  var c = window.claude;
+  if (!c || !c.use){ setTimeout(function(){ if (!window.claude || !window.claude.use){ S.ready = true; S.noStore = true; render(true); } else start(window.claude); }, 1200); return; }
+  start(c);
+}
+function start(c){
+  function u(n){ return Promise.resolve().then(function(){ return c.use(n); }).catch(function(){ return null; }); }
+  Promise.all([u("db"), u("user"), u("assets"), u("downloads")]).then(function(r){
+    S.db = r[0]; S.user = r[1]; S.assets = r[2]; S.downloads = r[3];
+    var who = S.user ? Promise.all([S.user.id(), S.user.canEdit()]) : Promise.resolve([null, false]);
+    return who.then(function(w){
+      S.uid = w[0]; S.canEdit = !!w[1]; S.editMode = S.canEdit;
+      if (!S.db){ S.ready = true; S.noStore = true; render(true); return; }
+      S.db.collection("days").orderBy("order").onSnapshot(function(snap){
+        S.days = snap.docs.map(function(dd){ var o = clone(dd.data()); o.id = dd.id; return o; });
+        S.ready = true; if (!S.hashDone){ readHash(); S.hashDone = true; } schedule();
+      }, function(){ S.err = "Não foi possível carregar as peças. Recarregue a página."; schedule(); });
+      S.db.collection("reviews").onSnapshot(function(snap){
+        var next = {}; snap.docs.forEach(function(dd){ next[dd.id] = clone(dd.data()); }); S.reviews = next; resolveProfiles(); schedule();
+      }, function(){});
+    });
+  });
+}
+boot();
+})();
+</script></body></html>
