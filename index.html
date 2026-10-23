@@ -555,9 +555,9 @@ function sendForm(pid, s, note){
   S.days.forEach(function(d){ if ("day:" + d.id === pid){ dayName = d.weekday + " " + d.date + " · " + d.title; pieceName = "Comentário geral do dia"; }
     piecesOf(d).forEach(function(p){ if (p.id === pid){ dayName = d.weekday + " " + d.date + " · " + d.title; pieceName = (p.time ? p.time + " · " : "") + p.name; } }); });
   var e = FORM.entries, body = new URLSearchParams();
-  body.append(e.name, S.local.name.trim()); body.append(e.day, dayName); body.append(e.piece, pieceName);
+  body.append(e.name, S.local.name.trim() || "—"); body.append(e.day, dayName || "—"); body.append(e.piece, pieceName || "—");
   body.append(e.status, s === "ok" ? "Aprovado" : s === "fix" ? "Pedir ajuste" : s === "note" ? "Comentário" : "Parecer retirado");
-  body.append(e.note, note || "");
+  body.append(e.note, (note || "").trim() || "—");
   fetch(FORM.action, {method:"POST", mode:"no-cors", body: body}).then(function(){ if (s) toast(s === "ok" ? "Aprovação enviada." : s === "fix" ? "Pedido de ajuste enviado." : "Comentário enviado."); },
     function(){ toast("Não foi possível enviar agora. Verifique a internet e clique de novo."); });
 }
