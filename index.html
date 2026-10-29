@@ -105,7 +105,7 @@ img,video{max-width:100%;display:block}
 .empty{border:2px dashed var(--line);border-radius:var(--r-md);display:grid;place-items:center;text-align:center;color:var(--ink-soft);padding:16px;font-size:13px;font-weight:600;background:var(--sunk)}
 .frame{border-radius:var(--r-md);overflow:hidden;background:#000;width:100%}
 .v916{aspect-ratio:9/16;max-width:290px;margin:0 auto;width:100%}
-.v45{aspect-ratio:4/5}
+.v45{aspect-ratio:1/1}
 .v169{aspect-ratio:16/9}
 .frame video,.frame img{width:100%;height:100%;object-fit:contain}
 .frame.cover img{object-fit:cover}
@@ -113,9 +113,17 @@ img,video{max-width:100%;display:block}
 .covers{display:flex;gap:12px;align-items:flex-end;justify-content:center}
 .covers .mini{width:84px;flex:none;display:flex;flex-direction:column;gap:6px}
 .covers .mini .frame{aspect-ratio:4/5}
+.copts{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.copts .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.copt{display:flex;flex-direction:column;gap:8px;border:2px solid transparent;border-radius:calc(var(--r-md) + 4px);padding:4px}
+.copt[aria-current="true"]{border-color:var(--orange)}
+.copt .frame{aspect-ratio:1/1}
+.copt b{font:800 14px/1 var(--display)}
+.copt .btn{align-self:stretch;text-align:center}
+.verdict.cover{background:var(--sunk)}
 
 .car{position:relative}
-.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:var(--r-md);background:#000;aspect-ratio:4/5}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:var(--r-md);background:#000;aspect-ratio:1/1}
 .track::-webkit-scrollbar{display:none}
 .slide{flex:0 0 100%;scroll-snap-align:start;height:100%}
 .slide img,.slide video{width:100%;height:100%;object-fit:cover}
@@ -123,7 +131,7 @@ img,video{max-width:100%;display:block}
 .carnav.prev{left:10px} .carnav.next{right:10px}
 .count{position:absolute;top:10px;right:10px;background:rgba(25,23,24,.78);color:#FAF6E4;border-radius:999px;padding:4px 10px;font:700 12px/1 var(--display);font-variant-numeric:tabular-nums}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
-.thumb{border:2px solid transparent;border-radius:8px;padding:0;overflow:hidden;background:#000;aspect-ratio:4/5;position:relative}
+.thumb{border:2px solid transparent;border-radius:8px;padding:0;overflow:hidden;background:#000;aspect-ratio:1/1;position:relative}
 .thumb[aria-current="true"]{border-color:var(--orange)}
 .thumb img,.thumb video{width:100%;height:100%;object-fit:cover}
 .thumb span{position:absolute;left:3px;bottom:3px;background:rgba(25,23,24,.75);color:#FAF6E4;font:700 10px/1 var(--display);padding:2px 5px;border-radius:5px}
@@ -380,7 +388,7 @@ function coverPage(){
     S.days.length ? el("section", {class:"days", "aria-label":"Dias"}, cards) : el("div", {class:"notice"}, el("p", {text: S.editMode ? "Nenhum dia cadastrado ainda." : "Nenhum dia liberado para avaliação ainda."}))
   ];
 }
-function hasMedia(p){ return (p.media && p.media.length) || p.cover; }
+function hasMedia(p){ return (p.media && p.media.length) || p.cover || (p.covers && p.covers.length); }
 function reviewsPanel(){
   var ids = Object.keys(S.reviews).filter(function(id){ var it = S.reviews[id] && S.reviews[id].items; return it && Object.keys(it).length; });
   if (!ids.length) return el("section", {class:"panel"}, el("h2", {text:"Pareceres da diretoria"}), el("p", {class:"lead", text:"Nenhum parecer ainda. Quando um diretor marcar uma peça, ele aparece aqui, com os ajustes pedidos."}));
@@ -401,7 +409,17 @@ function reviewsPanel(){
       var pr = S.profiles[f.id] || {};
       return el("li", null, el("a", {onclick:function(){ go(f.ref.i + 1); }, text: f.ref.d.date + " · " + (f.ref.p ? f.ref.p.name : "Comentário do dia")}),
         el("span", {text: (pr.name || "Diretor") + ": " + (f.r.note || "Pediu ajuste, sem comentário.")}));
-    })) : el("p", {class:"hint", text:"Nenhum ajuste pedido até agora."}));
+    })) : el("p", {class:"hint", text:"Nenhum ajuste pedido até agora."}), coverTally(index, ids));
+}
+function coverTally(index, ids){
+  var rows = [];
+  Object.keys(index).forEach(function(k){ var ref = index[k]; if (!ref.p || !ref.p.covers || ref.p.covers.length < 2) return;
+    var n = {}, total = 0;
+    ids.forEach(function(id){ var r = S.reviews[id].items["cover:" + ref.p.id]; if (r && r.choice){ n[r.choice] = (n[r.choice] || 0) + 1; total++; } });
+    rows.push(el("li", null, el("a", {onclick:function(){ go(ref.i + 1); }, text: ref.d.date + " · Capa do " + ref.p.name}),
+      el("span", {text: total ? Object.keys(n).sort().map(function(L){ return "Opção " + L + ": " + n[L] + (n[L] === 1 ? " voto" : " votos"); }).join(" · ") : "Ninguém escolheu ainda."})));
+  });
+  return rows.length ? el("div", {style:"display:flex;flex-direction:column;gap:8px"}, el("span", {class:"subcap", text:"Escolha de capas"}), el("ul", {class:"fixlist"}, rows)) : null;
 }
 
 /* ---------- day page ---------- */
@@ -436,12 +454,53 @@ function pieceCard(d, p, k){
     el("div", {class:"chan", text: (p.channel || K.chan) + " · " + K.label}),
     el("h3", {text: p.name || K.label}),
     preview(p, d),
+    coverOptions(p),
     editing ? editFields(d, p) : texts(p));
   if (S.editMode){ var vd = verdicts(p.id); if (vd) card.append(vd); card.append(editTools(d, p, k)); }
   else card.append(reviewBox(p.id));
   return card;
 }
 
+var LETTERS = "ABCDEFGH";
+function coverOptions(p){
+  var cs = p.covers || [];
+  if (cs.length < 2) return null;
+  var key = "cover:" + p.id, mine = S.editMode ? null : myItems()[key], pick = mine && mine.choice;
+  return el("div", {class:"copts"},
+    el("span", {class:"subcap", text: S.editMode ? "Opções de capa" : "Escolha a capa"}),
+    S.editMode ? null : el("p", {class:"hint", text:"Qual capa agrada mais? Toque em uma opção para escolher."}),
+    el("div", {class:"row2"}, cs.map(function(m, j){ var L = LETTERS[j];
+      return el("div", {class:"copt", "aria-current": pick === L ? "true" : "false"},
+        el("div", {class:"frame cover"}, media(m)),
+        S.editMode ? el("b", {text:"Opção " + L}) :
+        el("button", {class:"btn small" + (pick === L ? " brand" : ""), "aria-pressed": pick === L ? "true" : "false",
+          onclick:function(){ chooseCover(p, pick === L ? null : L); }}, pick === L ? "Opção " + L + " escolhida" : "Escolher opção " + L));
+    })));
+}
+function chooseCover(p, L){
+  var key = "cover:" + p.id, items = clone(myItems());
+  if (!L) delete items[key]; else items[key] = {s:"cover", choice:L, at: Date.now()};
+  if (S.offline){
+    if (FORM && !S.local.name.trim()){ toast("Escreva seu nome no campo do topo antes de escolher."); var nf = document.getElementById("offname"); if (nf) nf.focus(); return; }
+    S.local.items = items; lsSet("toh-pecas-parecer", S.local); render(true);
+    if (FORM) sendCover(p, L);
+    else if (L) toast("Opção " + L + " escolhida.");
+    return; }
+  if (!S.db || !S.uid){ toast("Entre na sua conta do Claude para escolher a capa."); return; }
+  S.reviews[S.uid] = {items:items}; render(true);
+  S.db.doc("reviews/" + S.uid).set({items:items}).then(function(){ if (L) toast("Opção " + L + " escolhida."); }).catch(function(){ toast("Não foi possível salvar sua escolha. Verifique a conexão e tente de novo."); });
+}
+function sendCover(p, L){
+  var dayName = "";
+  S.days.forEach(function(d){ piecesOf(d).forEach(function(x){ if (x.id === p.id) dayName = d.weekday + " " + d.date + " · " + d.title; }); });
+  var e = FORM.entries, body = new URLSearchParams();
+  body.append(e.name, S.local.name.trim() || "—"); body.append(e.day, dayName || "—");
+  body.append(e.piece, "Capa · " + (p.time ? p.time + " · " : "") + p.name);
+  body.append(e.status, "Aprovado");
+  body.append(e.note, L ? "Capa escolhida: opção " + L : "Retirou a escolha de capa");
+  fetch(FORM.action, {method:"POST", mode:"no-cors", body: body}).then(function(){ toast(L ? "Escolha da opção " + L + " enviada." : "Escolha retirada."); },
+    function(){ toast("Não foi possível enviar agora. Verifique a internet e clique de novo."); });
+}
 function texts(p){
   var K = KINDS[p.kind] || KINDS.reel, t = p.t || {};
   var shown = K.fields.filter(function(f){ return p.kind !== "email" && p.kind !== "whatsapp" || f[0] === "__"; });
@@ -548,6 +607,10 @@ function verdicts(pid){
     rows.push(el("div", {class:"verdict " + r.s}, pr.avatarUrl ? el("img", {src:pr.avatarUrl, alt:""}) : null,
       el("p", null, el("b", {text: (pr.name || "Diretor") + (r.s === "ok" ? ": aprovou" : ": pediu ajuste")}), r.note ? "\n" + r.note : "")));
   });
+  Object.keys(S.reviews).forEach(function(id){ var it = S.reviews[id] && S.reviews[id].items; var r = it && it["cover:" + pid]; if (!r || !r.choice) return;
+    var pr = S.profiles[id] || {};
+    rows.push(el("div", {class:"verdict cover"}, pr.avatarUrl ? el("img", {src:pr.avatarUrl, alt:""}) : null, el("p", null, el("b", {text: (pr.name || "Diretor") + ": escolheu a capa " + r.choice}))));
+  });
   return rows.length ? el("div", {class:"verdicts"}, rows) : null;
 }
 function sendForm(pid, s, note){
@@ -565,7 +628,7 @@ function copyReport(){
   var it = S.local.items, lines = ["Parecer sobre as peças do lançamento" + (S.local.name ? " · " + S.local.name : ""), ""];
   S.days.forEach(function(d){
     var dl = [];
-    piecesOf(d).forEach(function(p){ var r = it[p.id]; if (!r) return; dl.push("- " + (p.time ? p.time + " · " : "") + p.name + ": " + (r.s === "ok" ? "aprovado" : "ajustar" + (r.note ? " — " + r.note : ""))); });
+    piecesOf(d).forEach(function(p){ var c = it["cover:" + p.id]; if (c && c.choice) dl.push("- " + (p.time ? p.time + " · " : "") + p.name + ": capa escolhida, opção " + c.choice); var r = it[p.id]; if (!r) return; dl.push("- " + (p.time ? p.time + " · " : "") + p.name + ": " + (r.s === "ok" ? "aprovado" : "ajustar" + (r.note ? " — " + r.note : ""))); });
     var dn = it["day:" + d.id]; if (dn && dn.note) dl.push("- Comentário do dia: " + dn.note);
     if (dl.length){ lines.push(d.weekday + " " + d.date + " · " + d.title); lines = lines.concat(dl); lines.push(""); }
   });
@@ -612,10 +675,10 @@ function editFields(d, p){
   return wrap;
 }
 var SLOTS = {
-  reel:{main:"Vídeo do Reel", multi:false, cover:"Capa do Reel"},
+  reel:{main:"Vídeo do Reel", multi:false, cover:"Capa do Reel", options:"Opções de capa para a diretoria escolher (A, B…)"},
   short:{main:"Vídeo do Short", multi:false},
   youtube:{main:"Vídeo completo", multi:false, cover:"Thumbnail (1280 x 720)"},
-  carrossel:{main:"Lâminas (na ordem)", multi:true},
+  carrossel:{main:"Lâminas (na ordem)", multi:true, options:"Opções de capa para a diretoria escolher (A, B…)"},
   stories:{main:"Telas dos stories (na ordem)", multi:true},
   email:{main:"Imagens extras", multi:true, cover:"Arte principal"},
   whatsapp:{main:"Anexos (imagem ou vídeo)", multi:true}
@@ -644,6 +707,13 @@ function mediaEditor(d, p){
       el("div", {class:"row"}, el("button", {"aria-label":"Remover", onclick:function(){ p.cover = null; saveDay(d); render(true); }}, "✕")))));
     box.append(el("span", {class:"btn small filebtn"}, p.cover ? "Trocar imagem" : "Enviar imagem", el("input", {type:"file", accept:"image/png,image/jpeg,image/webp",
       onchange:function(e){ var fs = Array.prototype.slice.call(e.target.files || []); e.target.value = ""; if (fs.length) upload(fs).then(function(out){ if (out.length){ p.cover = out[0]; saveDay(d); render(true); } }); }})));
+  }
+  if (sl.options){
+    p.covers = p.covers || [];
+    box.append(el("span", {class:"subcap", text: sl.options}));
+    if (p.covers.length) box.append(el("div", {class:"mlist"}, p.covers.map(function(m, j){ return item(m, j, p.covers); })));
+    box.append(picker(p.covers.length ? "Adicionar opção de capa" : "Enviar opções de capa", true, function(out){ p.covers = p.covers.concat(out.filter(function(x){ return x.type === "image"; })); }));
+    box.append(el("p", {class:"hint", text:"Com duas ou mais opções, a diretoria vê as capas lado a lado e escolhe uma. A ordem aqui define A, B, C."}));
   }
   box.append(el("p", {class:"hint", text:"Imagens JPG, PNG ou WebP e vídeos MP4 de até 20 MB cada. Vídeo .mov precisa ser exportado em MP4."}));
   return box;
@@ -681,7 +751,7 @@ function addPieceCard(d){
 function exportOffline(){
   var ids = {}, list = [], vis = visibleDays();
   if (!vis.length){ toast("Nenhum dia está visível para a diretoria. Mostre ao menos um dia antes de baixar."); return; }
-  vis.forEach(function(d){ piecesOf(d).forEach(function(p){ (p.media || []).concat(p.cover ? [p.cover] : []).forEach(function(m){ if (!ids[m.id]){ ids[m.id] = 1; list.push(m.id); } }); }); });
+  vis.forEach(function(d){ piecesOf(d).forEach(function(p){ (p.media || []).concat(p.cover ? [p.cover] : [], p.covers || []).forEach(function(m){ if (!ids[m.id]){ ids[m.id] = 1; list.push(m.id); } }); }); });
   var parts = [], i = 0;
   function b64(blob){ return new Promise(function(res, rej){ var fr = new FileReader(); fr.onload = function(){ res(fr.result); }; fr.onerror = rej; fr.readAsDataURL(blob); }); }
   function next(){
