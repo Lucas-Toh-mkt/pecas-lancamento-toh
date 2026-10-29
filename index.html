@@ -479,6 +479,7 @@ function coverOptions(p){
 }
 function chooseCover(p, L){
   var key = "cover:" + p.id, items = clone(myItems());
+  S.car[p.id] = 0;
   if (!L) delete items[key]; else items[key] = {s:"cover", choice:L, at: Date.now()};
   if (S.offline){
     if (FORM && !S.local.name.trim()){ toast("Escreva seu nome no campo do topo antes de escolher."); var nf = document.getElementById("offname"); if (nf) nf.focus(); return; }
@@ -547,8 +548,13 @@ function preview(p, d){
   return null;
 }
 
+function pickedCover(p){
+  if (S.editMode || !p.covers || p.covers.length < 2) return null;
+  var r = myItems()["cover:" + p.id], j = r && r.choice ? LETTERS.indexOf(r.choice) : -1;
+  return j >= 0 ? p.covers[j] || null : null;
+}
 function carousel(p){
-  var m = p.media || [];
+  var pc = pickedCover(p), m = (pc ? [pc] : []).concat(p.media || []);
   if (!m.length) return empty("Lâminas do carrossel em produção", "v45");
   var id = p.id, track, count, thumbs;
   function show(n){ track.scrollTo({left: n * track.clientWidth, behavior: "smooth"}); }
@@ -564,7 +570,7 @@ function carousel(p){
       m.length > 1 ? el("button", {class:"carnav prev", "aria-label":"Lâmina anterior", onclick:function(){ show(Math.max(0, cur()-1)); }}, "‹") : null,
       m.length > 1 ? el("button", {class:"carnav next", "aria-label":"Próxima lâmina", onclick:function(){ show(Math.min(m.length-1, cur()+1)); }}, "›") : null,
       count),
-    el("span", {class:"subcap", text: m.length + " lâminas"}), thumbs);
+    el("span", {class:"subcap", text: pc ? "Capa escolhida + " + (m.length - 1) + " lâminas" : m.length + " lâminas"}), thumbs);
 }
 function restoreCarousels(){
   document.querySelectorAll(".track[data-car]").forEach(function(t){ var n = S.car[t.getAttribute("data-car")] || 0; if (n){ t.scrollLeft = n * t.clientWidth; t.dispatchEvent(new Event("scroll")); } });
